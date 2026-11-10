@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "tertiary-container": "#1f1b16",
+          "surface-tint": "#5e5e62",
+          "secondary": "#5d5f5f",
+          "surface-dim": "#d8dadd",
+          "on-secondary-fixed-variant": "#454747",
+          "surface-container-low": "#f2f4f7",
+          "secondary-container": "#dfe0e0",
+          "secondary-fixed-dim": "#c6c6c7",
+          "on-surface-variant": "#46464b",
+          "surface-container": "#eceef1",
+          "on-tertiary-container": "#8a827c",
+          "on-primary-fixed-variant": "#46464a",
+          "outline-variant": "#e2e5e9",
+          "primary-fixed-dim": "#c7c6ca",
+          "surface-container-lowest": "#ffffff",
+          "on-primary-container": "#848387",
+          "on-secondary-container": "#616363",
+          "on-tertiary-fixed": "#1f1b16",
+          "on-tertiary": "#ffffff",
+          "tertiary-fixed": "#ebe1d9",
+          "on-error-container": "#93000a",
+          "on-error": "#ffffff",
+          "secondary-fixed": "#e2e2e2",
+          "primary-container": "#1b1b1f",
+          "on-secondary-fixed": "#1a1c1c",
+          "surface-variant": "#e0e3e6",
+          "on-secondary": "#ffffff",
+          "inverse-surface": "#2d3133",
+          "error": "#e11d48",
+          "surface-container-high": "#e6e8eb",
+          "background": "#f7f9fc",
+          "inverse-on-surface": "#eff1f4",
+          "tertiary-fixed-dim": "#cec5be",
+          "on-primary": "#ffffff",
+          "surface": "#f7f9fc",
+          "outline": "#8a8f98",
+          "on-tertiary-fixed-variant": "#4c4640",
+          "on-background": "#0d0e11",
+          "on-primary-fixed": "#1b1b1f",
+          "surface-bright": "#f7f9fc",
+          "primary-fixed": "#e3e2e6",
+          "error-container": "#ffe4e6",
+          "primary": "#000000",
+          "on-surface": "#0d0e11",
+          "inverse-primary": "#c7c6ca",
+          "tertiary": "#000000",
+          "surface-container-highest": "#dfe3e7"
+        },
+        "borderRadius": {
+          "DEFAULT": "1rem",
+          "lg": "1.5rem",
+          "xl": "2rem",
+          "full": "9999px"
+        },
+        "spacing": {
+          "gutter": "1rem",
+          "gutter-mobile": "0.875rem",
+          "margin": "1.25rem",
+          "margin-mobile": "1rem",
+          "space-xs": "0.25rem",
+          "space-sm": "0.5rem",
+          "space-md": "1rem",
+          "space-lg": "1.5rem",
+          "space-xl": "2.25rem"
+        },
+        "fontFamily": {
+          "headline-lg": ["Space Grotesk", "sans-serif"],
+          "headline-md": ["Space Grotesk", "sans-serif"],
+          "headline-sm": ["Space Grotesk", "sans-serif"],
+          "display": ["Space Grotesk", "sans-serif"],
+          "body-lg": ["Plus Jakarta Sans", "sans-serif"],
+          "body-md": ["Plus Jakarta Sans", "sans-serif"],
+          "body-sm": ["Plus Jakarta Sans", "sans-serif"],
+          "caption": ["Plus Jakarta Sans", "sans-serif"],
+          "mono-label": ["JetBrains Mono", "monospace"],
+          "mono-code": ["JetBrains Mono", "monospace"]
+        }
+      }
+    }
+  };
+</script><style>@layer base { html, body { width: 100%; margin: 0; padding: 0; background-color: #f7f9fc; } body { overscroll-behavior-y: none; -webkit-tap-highlight-color: transparent; } .pb-safe { padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }
+.neo-card {
+  background: #ffffff;
+  border: 1px solid #e5e8ed;
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+}
+.neo-card-subtle {
+  background: #f8fafc;
+  border: 1px solid #eaedf1;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 1px 3px rgba(15, 23, 42, 0.03);
+}
+.neo-btn-tactile {
+  background: #ffffff;
+  border: 1px solid #e2e6ea;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+.neo-inset {
+  background: #f1f4f8;
+  box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.05);
+}
+</style></head><body class="bg-background text-on-surface antialiased min-h-screen flex flex-col"><header class="fixed top-0 w-full z-50 pt-safe bg-[#f7f9fc]/90 backdrop-blur-xl border-b border-outline-variant/60 shadow-[0_2px_8px_rgba(0,0,0,0.02)]"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><span class="font-headline-lg text-2xl tracking-tight font-extrabold text-[#0d0e11] select-none">CapCheck</span></div><div class="flex items-center gap-2"><button aria-label="Search" class="w-10 h-10 rounded-full neo-btn-tactile active:scale-95 flex items-center justify-center text-on-surface transition-all"><span class="material-symbols-outlined text-[20px]">search</span></button><button aria-label="Notifications" class="w-10 h-10 rounded-full neo-btn-tactile active:scale-95 flex items-center justify-center text-on-surface transition-all"><span class="material-symbols-outlined text-[20px]">notifications</span></button><div class="w-9 h-9 rounded-full bg-[#0d0e11] flex items-center justify-center ml-1 text-white shadow-sm active:scale-95 transition-transform"><span class="material-symbols-outlined text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-background"><div class="flex flex-col w-full text-on-surface">
+<!-- Subtle Ambient Layer -->
+<div class="relative w-full px-margin pt-space-md flex flex-col gap-space-lg">
+<!-- Top Section: Editorial Heading & Summary -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-mono-label text-[11px] font-semibold uppercase tracking-wider text-on-surface-variant flex items-center gap-1.5">
+<span class="inline-block w-2 h-2 rounded-full bg-error"></span>
+          VERACITY AUDIT PROTOCOL
+        </span>
+<span class="font-mono-label text-[11px] text-outline text-right font-medium">CY-2025.04</span>
+</div>
+<h1 class="font-headline-lg text-[30px] leading-tight text-[#0d0e11] tracking-tight font-extrabold">
+        Leaderboard
+      </h1>
+<p class="font-body-md text-sm text-on-surface-variant">
+        Debunk index &amp; creator credibility rankings
+      </p>
+</div>
+<!-- Timeframe Segmented Switcher (Tactile Pill Dock) -->
+<div class="w-full p-1 neo-inset rounded-full flex items-center justify-between border border-outline-variant/40">
+<button class="timeframe-btn flex-1 py-2 text-center rounded-full font-mono-label text-[11px] font-semibold uppercase tracking-wider transition-all duration-200 bg-[#0d0e11] text-white shadow-md" data-timeframe="all" type="button">
+        All-Time
+      </button>
+<button class="timeframe-btn flex-1 py-2 text-center rounded-full font-mono-label text-[11px] font-semibold uppercase tracking-wider text-on-surface-variant hover:text-on-surface transition-all duration-200" data-timeframe="month" type="button">
+        This Month
+      </button>
+<button class="timeframe-btn flex-1 py-2 text-center rounded-full font-mono-label text-[11px] font-semibold uppercase tracking-wider text-on-surface-variant hover:text-on-surface transition-all duration-200" data-timeframe="week" type="button">
+        This Week
+      </button>
+</div>
+<!-- Search Input & Horizontal Category Scroller -->
+<div class="flex flex-col gap-space-sm">
+<div class="relative w-full flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-[20px] text-outline pointer-events-none">search</span>
+<input class="w-full bg-white border border-outline-variant text-on-surface placeholder:text-outline font-body-md text-sm pl-11 pr-11 py-3 rounded-full transition-all focus:outline-none focus:border-[#0d0e11] focus:ring-2 focus:ring-[#0d0e11]/5 shadow-sm" placeholder="Search creator, topic or handle..." type="text"/>
+<button aria-label="Filter Claims" class="absolute right-2.5 w-8 h-8 rounded-full bg-surface-container-low border border-outline-variant/60 flex items-center justify-center text-on-surface-variant active:scale-95 transition-transform hover:text-on-surface">
+<span class="material-symbols-outlined text-[16px]">tune</span>
+</button>
+</div>
+<!-- Category Filter Chips -->
+<div class="flex items-center gap-space-xs overflow-x-auto no-scrollbar pt-1 pb-1 -mx-margin px-margin">
+<button class="category-chip px-4 py-1.5 rounded-full bg-[#0d0e11] text-white font-caption text-xs font-semibold whitespace-nowrap shadow-sm active:scale-95 transition-all">
+          All Sectors
+        </button>
+<button class="category-chip px-4 py-1.5 rounded-full neo-btn-tactile text-on-surface-variant hover:text-on-surface font-caption text-xs font-medium whitespace-nowrap active:scale-95 transition-all">
+          Health &amp; Biohack
+        </button>
+<button class="category-chip px-4 py-1.5 rounded-full neo-btn-tactile text-on-surface-variant hover:text-on-surface font-caption text-xs font-medium whitespace-nowrap active:scale-95 transition-all">
+          Finance / Crypto
+        </button>
+<button class="category-chip px-4 py-1.5 rounded-full neo-btn-tactile text-on-surface-variant hover:text-on-surface font-caption text-xs font-medium whitespace-nowrap active:scale-95 transition-all">
+          Fitness
+        </button>
+<button class="category-chip px-4 py-1.5 rounded-full neo-btn-tactile text-on-surface-variant hover:text-on-surface font-caption text-xs font-medium whitespace-nowrap active:scale-95 transition-all">
+          Tech &amp; AI
+        </button>
+</div>
+</div>
+<!-- Spotlight: Top 3 Podium Leaders (LarpKing Index) -->
+<div class="flex flex-col gap-space-sm pt-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#0d0e11] text-[20px]">workspace_premium</span>
+<h2 class="font-headline-sm text-lg text-on-surface font-bold tracking-tight">
+            Top Discrepancy Leaders
+          </h2>
+</div>
+<span class="font-mono-label text-[11px] text-outline font-semibold uppercase tracking-wider">
+          LARPKING INDEX
+        </span>
+</div>
+<!-- Rank #1 Hero Showcase Card -->
+<div class="relative w-full rounded-2xl neo-card p-4.5 overflow-hidden flex flex-col gap-space-md"><div class="absolute -right-10 -top-10 w-44 h-44 rounded-full bg-error/5 blur-3xl pointer-events-none"></div><div class="flex items-start justify-between z-10"><div class="flex items-start gap-3"><div class="relative shrink-0"><div class="w-14 h-14 rounded-2xl bg-surface-container-low border border-outline-variant overflow-hidden flex items-center justify-center shadow-inner"><img class="w-full h-full object-cover" data-alt="Portrait of male influencer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjfV2sf8OtNnuDs7Ri1ge8mT1QMT6yllg5ButKnUPKUQr8J0-vWxBi3erEFmRAf-L_8RkCJ95nWFwQ7oD9aAFNB09rIQEA1hD5UeToArZ3Rn-OUhKOMzbndVSCkHedrxAeKSf-w4AM6-2KyrS46ymium7BRxuL7OOuCzJR3V0o2MSXXAsytaaPnFyktIj7cKB1Lh56DQadUxYq_ZM7Ce2Pld1CwQkW-FjB8tIu5eo"/></div><div class="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-full bg-[#0d0e11] border border-white flex items-center justify-center font-mono-code text-[10px] font-bold text-white shadow-sm">#1</div></div><div class="flex flex-col"><div class="flex items-center gap-1.5"><span class="font-headline-sm text-base font-bold text-[#0d0e11] tracking-tight">@DrHolisticVibes</span><span class="text-[13px] text-error font-bold" title="Discrepancy Warning">△</span></div><span class="font-caption text-xs text-on-surface-variant mt-0.5 font-medium">Functional Health &amp; Peptide Guru</span><div class="flex items-center gap-2 mt-2 font-mono-label text-[10px] text-outline"><span>3.2M FOLLOWER REACH</span><span>•</span><span>14.2M VIEWS FLAGGED</span></div></div></div><div class="flex flex-col items-end shrink-0 pl-2"><span class="font-headline-xl text-[34px] font-extrabold text-error leading-none tracking-tight">88%</span><span class="font-mono-label text-[9px] text-error font-bold tracking-widest uppercase mt-1">CAP RATE</span></div></div><div class="w-full bg-[#f8fafc] border border-outline-variant/60 rounded-xl px-4 py-3 flex items-center justify-between z-10 shadow-sm"><div class="flex items-center gap-6"><div class="flex flex-col"><span class="font-mono-label text-[10px] text-outline uppercase tracking-wider font-semibold">VERIFIED DEBUNKS</span><span class="font-mono-code text-sm font-bold text-[#0d0e11] mt-0.5">42 Claims</span></div><div class="flex flex-col"><span class="font-mono-label text-[10px] text-outline uppercase tracking-wider font-semibold">SEVERITY LEVEL</span><span class="font-mono-code text-sm font-bold text-error mt-0.5">Heavy Larp</span></div></div></div></div>
+<!-- Rank #2 and #3 Split Grid -->
+<div class="grid grid-cols-2 gap-space-sm"><div class="relative rounded-2xl neo-card p-3.5 flex flex-col justify-between overflow-hidden"><div class="flex items-start justify-between"><div class="relative shrink-0"><div class="w-11 h-11 rounded-xl bg-surface-container-low border border-outline-variant overflow-hidden flex items-center justify-center shadow-inner"><img class="w-full h-full object-cover" data-alt="Monochromatic stylized profile of a day trader" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKh0nr-0_Ar4njgbMyOxZ0yclynuDvypSk3eHGKN5dCXhsO6laoJvibkQ-LcV_5qeFT4pi9xrFgVMzApUZB4twoqTV_IlhNpkA329ETGoIhwpJiLiXVZHvZEEMCReNkjyzfYdjxBJKqKEtjmnXsQ1XoU6wcZSEdeGtOk6HjWj6fVhxRdMq6s_oekdbftvzB27-OzU_nyhD0ZRvvQ-IdCoavDLPfYd5kzsjWAa0K9k"/></div><div class="absolute -bottom-1 -right-1 px-1.5 py-0.2 rounded-full bg-[#0d0e11] border border-white flex items-center justify-center font-mono-code text-[9px] font-bold text-white shadow-sm">#2</div></div><div class="flex flex-col items-end shrink-0 pl-1"><span class="font-headline-md text-xl font-bold text-error leading-tight">79%</span><span class="font-mono-label text-[9px] text-outline tracking-wider uppercase font-semibold">CAP RATE</span></div></div><div class="mt-3 flex flex-col"><span class="font-headline-sm text-sm font-bold text-[#0d0e11] truncate">@CryptoAlphaDaily</span><span class="font-mono-label text-[11px] text-outline truncate mt-0.5">31 Verified Debunks</span><span class="font-caption text-xs text-on-surface-variant truncate mt-0.5">Memecoin arbitrage &amp; yi...</span></div><div class="mt-3 pt-2.5 flex items-center justify-between border-t border-outline-variant/60"><span class="font-mono-label text-[10px] text-error font-bold uppercase tracking-wider bg-error/10 px-2 py-0.5 rounded-full">HIGH RISK</span><span class="material-symbols-outlined text-[16px] text-on-surface-variant">north_east</span></div></div><div class="relative rounded-2xl neo-card p-3.5 flex flex-col justify-between overflow-hidden"><div class="flex items-start justify-between"><div class="relative shrink-0"><div class="w-11 h-11 rounded-xl bg-surface-container-low border border-outline-variant overflow-hidden flex items-center justify-center shadow-inner"><img class="w-full h-full object-cover" data-alt="Editorial portrait of coach" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzBsWG2Xevnze3cOUDB0VD125p927XWeup6LnOSmHcMezazUydXRBEn_NfKdGArVr6LrNSMpGU4DCkX_Owq2u37NgR9p-X_VX4e2SAa0oJVk0YvRGBOy7OIPeVY7FpCjroVcRaL7gKoHQ3XH8N2TZCAy5T1Y0oLrBjzhtBj01jku5FOEVS2T0gLS3z7ZF98GAUyyfLzjdGgG3BPgIxyLtC9CrKrj0MqszOyow0adc"/></div><div class="absolute -bottom-1 -right-1 px-1.5 py-0.2 rounded-full bg-[#0d0e11] border border-white flex items-center justify-center font-mono-code text-[9px] font-bold text-white shadow-sm">#3</div></div><div class="flex flex-col items-end shrink-0 pl-1"><span class="font-headline-md text-xl font-bold text-error leading-tight">74%</span><span class="font-mono-label text-[9px] text-outline tracking-wider uppercase font-semibold">CAP RATE</span></div></div><div class="mt-3 flex flex-col"><span class="font-headline-sm text-sm font-bold text-[#0d0e11] truncate">@PrimalGutGuru</span><span class="font-mono-label text-[11px] text-outline truncate mt-0.5">26 Verified Debunks</span><span class="font-caption text-xs text-on-surface-variant truncate mt-0.5">Raw meat carnivore clai...</span></div><div class="mt-3 pt-2.5 flex items-center justify-between border-t border-outline-variant/60"><span class="font-mono-label text-[10px] text-amber-700 font-bold uppercase tracking-wider bg-amber-500/10 px-2 py-0.5 rounded-full">MODERATE RISK</span><span class="material-symbols-outlined text-[16px] text-on-surface-variant">north_east</span></div></div></div>
+</div>
+<!-- Visual Anchor: Contextual Visual Evidence Reference -->
+<div class="relative w-full rounded-2xl neo-card overflow-hidden p-3.5 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-[#0d0e11]">analytics</span>
+<span class="font-mono-label text-xs uppercase tracking-wider font-semibold text-[#0d0e11]">COMMUNITY AUDIT HEATMAP</span>
+</div>
+<span class="font-mono-label text-[10px] text-outline font-semibold">CROSS-INDEXED</span>
+</div>
+<div class="w-full h-28 rounded-xl overflow-hidden relative"><div class="w-full h-full bg-[#f8fafc] border border-outline-variant/60 flex flex-col justify-between p-3 relative"><div class="absolute inset-0 bg-gradient-to-r from-slate-200/20 via-error/5 to-transparent pointer-events-none"></div><div class="flex items-center justify-between z-10"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-error animate-pulse"></span><span class="font-mono-code text-[11px] text-[#0d0e11] font-bold">DISINFORMATION VOLUMETRICS</span></div><span class="font-mono-label text-[10px] text-error font-bold bg-error/10 px-2 py-0.5 rounded-full">+38.4% SURGE</span></div><div class="flex items-end justify-between gap-1.5 h-10 my-auto z-10 px-1"><div class="flex-1 bg-slate-200 rounded-t h-[30%]"></div><div class="flex-1 bg-slate-200 rounded-t h-[45%]"></div><div class="flex-1 bg-slate-200 rounded-t h-[38%]"></div><div class="flex-1 bg-slate-200 rounded-t h-[60%]"></div><div class="flex-1 bg-slate-200 rounded-t h-[52%]"></div><div class="flex-1 bg-rose-300 rounded-t h-[78%]"></div><div class="flex-1 bg-error rounded-t h-[95%] shadow-sm"></div><div class="flex-1 bg-rose-400 rounded-t h-[84%]"></div></div><div class="flex items-center justify-between z-10 pt-1 border-t border-outline-variant/60"><span class="font-caption text-xs text-on-surface-variant font-medium">Financial &amp; Medical claims across Short-form Video</span><span class="font-mono-label text-[10px] text-outline font-semibold">7D ROLLING</span></div></div></div>
+</div>
+<!-- Detailed Creator Ranking List (Ranks 4 to 8) -->
+<div class="flex flex-col gap-space-sm pt-space-xs">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-lg text-on-surface font-bold tracking-tight">
+          Audit Ranks #4 – #8
+        </h2>
+<span class="font-mono-label text-[11px] text-outline font-semibold uppercase tracking-wider">
+          SORT BY CAP RATE
+        </span>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Rank #4: @QuantumDietician -->
+<div class="w-full rounded-2xl neo-card p-3.5 flex items-center justify-between active:scale-[0.99] transition-all">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-surface-container-low border border-outline-variant/80 flex items-center justify-center font-mono-code text-xs font-bold text-on-surface-variant shrink-0">
+              04
+            </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-sm font-bold text-[#0d0e11] truncate">@QuantumDietician</span>
+<span class="font-mono-label text-[10px] text-error font-semibold flex items-center shrink-0">↗ +12%</span>
+</div>
+<div class="flex items-center gap-2 font-caption text-xs text-outline mt-0.5">
+<span class="truncate">19 claims debunked</span>
+<span>•</span>
+<span class="text-on-surface-variant">Dietary supplements</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 shrink-0 pl-2">
+<div class="flex flex-col items-end">
+<span class="font-headline-sm text-base font-bold text-error leading-tight">68%</span>
+<span class="font-mono-label text-[9px] text-outline uppercase font-semibold">CAP</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container-low border border-outline-variant/60 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Rank #5: @SiliconGuru -->
+<div class="w-full rounded-2xl neo-card p-3.5 flex items-center justify-between active:scale-[0.99] transition-all">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-surface-container-low border border-outline-variant/80 flex items-center justify-center font-mono-code text-xs font-bold text-on-surface-variant shrink-0">
+              05
+            </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-sm font-bold text-[#0d0e11] truncate">@SiliconGuru</span>
+<span class="font-mono-label text-[10px] text-emerald-600 font-semibold flex items-center shrink-0">↘ -4%</span>
+</div>
+<div class="flex items-center gap-2 font-caption text-xs text-outline mt-0.5">
+<span class="truncate">15 claims debunked</span>
+<span>•</span>
+<span class="text-on-surface-variant">AI hype &amp; automated riches</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 shrink-0 pl-2">
+<div class="flex flex-col items-end">
+<span class="font-headline-sm text-base font-bold text-error leading-tight">61%</span>
+<span class="font-mono-label text-[9px] text-outline uppercase font-semibold">CAP</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container-low border border-outline-variant/60 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Rank #6: @AuraBiochemist -->
+<div class="w-full rounded-2xl neo-card p-3.5 flex items-center justify-between active:scale-[0.99] transition-all">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-surface-container-low border border-outline-variant/80 flex items-center justify-center font-mono-code text-xs font-bold text-on-surface-variant shrink-0">
+              06
+            </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-sm font-bold text-[#0d0e11] truncate">@AuraBiochemist</span>
+<span class="font-mono-label text-[10px] text-outline font-semibold flex items-center shrink-0">-- 0%</span>
+</div>
+<div class="flex items-center gap-2 font-caption text-xs text-outline mt-0.5">
+<span class="truncate">12 claims debunked</span>
+<span>•</span>
+<span class="text-on-surface-variant">Frequency healing</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 shrink-0 pl-2">
+<div class="flex flex-col items-end">
+<span class="font-headline-sm text-base font-bold text-error leading-tight">58%</span>
+<span class="font-mono-label text-[9px] text-outline uppercase font-semibold">CAP</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container-low border border-outline-variant/60 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Rank #7: @DailyMindHacks -->
+<div class="w-full rounded-2xl neo-card p-3.5 flex items-center justify-between active:scale-[0.99] transition-all">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-surface-container-low border border-outline-variant/80 flex items-center justify-center font-mono-code text-xs font-bold text-on-surface-variant shrink-0">
+              07
+            </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-sm font-bold text-[#0d0e11] truncate">@DailyMindHacks</span>
+<span class="font-mono-label text-[10px] text-emerald-600 font-semibold flex items-center shrink-0">↘ -8%</span>
+</div>
+<div class="flex items-center gap-2 font-caption text-xs text-outline mt-0.5">
+<span class="truncate">9 claims debunked</span>
+<span>•</span>
+<span class="text-on-surface-variant">Sleep &amp; neuro-myths</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 shrink-0 pl-2">
+<div class="flex flex-col items-end">
+<span class="font-headline-sm text-base font-bold text-[#0d0e11] leading-tight">52%</span>
+<span class="font-mono-label text-[9px] text-outline uppercase font-semibold">CAP</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container-low border border-outline-variant/60 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Rank #8: @VascularBiohacker -->
+<div class="w-full rounded-2xl neo-card p-3.5 flex items-center justify-between active:scale-[0.99] transition-all">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-surface-container-low border border-outline-variant/80 flex items-center justify-center font-mono-code text-xs font-bold text-on-surface-variant shrink-0">
+              08
+            </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-sm font-bold text-[#0d0e11] truncate">@VascularBiohacker</span>
+<span class="font-mono-label text-[10px] text-error font-semibold flex items-center shrink-0">↗ +3%</span>
+</div>
+<div class="flex items-center gap-2 font-caption text-xs text-outline mt-0.5">
+<span class="truncate">8 claims debunked</span>
+<span>•</span>
+<span class="text-on-surface-variant">Nitric oxide myths</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 shrink-0 pl-2">
+<div class="flex flex-col items-end">
+<span class="font-headline-sm text-base font-bold text-[#0d0e11] leading-tight">49%</span>
+<span class="font-mono-label text-[9px] text-outline uppercase font-semibold">CAP</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container-low border border-outline-variant/60 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Tactile Callout Action Footer -->
+<div class="w-full rounded-2xl neo-card p-5 flex flex-col items-center text-center gap-2 mb-4">
+<div class="w-11 h-11 rounded-full bg-surface-container-low border border-outline-variant/70 flex items-center justify-center text-[#0d0e11] shadow-inner mb-1">
+<span class="material-symbols-outlined text-[24px]">policy</span>
+</div>
+<h3 class="font-headline-sm text-base font-bold text-[#0d0e11]">Submit Suspicious Creator Claim</h3>
+<p class="font-body-sm text-xs text-on-surface-variant max-w-xs leading-relaxed">
+        Drop a video link or tweet to run through CapCheck automated multi-source debunk engine.
+      </p>
+<button class="mt-2 w-full py-3.5 rounded-full bg-[#0d0e11] text-white font-headline-sm text-sm font-bold active:scale-[0.98] transition-all shadow-md hover:bg-black" type="button">
+        Analyze Link or Handle
+      </button>
+</div>
+</div>
+</div>
+<script>
+  // Interactive Timeframe Switcher Toggle
+  document.querySelectorAll('.timeframe-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.timeframe-btn').forEach(b => {
+        b.classList.remove('bg-[#0d0e11]', 'text-white', 'shadow-md');
+        b.classList.add('text-on-surface-variant');
+      });
+      btn.classList.add('bg-[#0d0e11]', 'text-white', 'shadow-md');
+      btn.classList.remove('text-on-surface-variant');
+    });
+  });
+
+  // Interactive Category Chip Selector
+  document.querySelectorAll('.category-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.category-chip').forEach(c => {
+        c.classList.remove('bg-[#0d0e11]', 'text-white', 'font-semibold', 'shadow-sm');
+        c.classList.add('neo-btn-tactile', 'text-on-surface-variant', 'font-medium');
+      });
+      chip.classList.add('bg-[#0d0e11]', 'text-white', 'font-semibold', 'shadow-sm');
+      chip.classList.remove('neo-btn-tactile', 'text-on-surface-variant', 'font-medium');
+    });
+  });
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-[#ffffff]/90 backdrop-blur-xl border-t border-outline-variant/70 shadow-[0_-4px_20px_rgba(0,0,0,0.04)]" data-active-classes="text-[#0d0e11] bg-surface-container"><div class="flex justify-around items-center h-16 px-gutter"><a class="flex flex-col items-center justify-center min-w-[64px] h-12 px-space-md rounded-full text-on-surface-variant hover:text-on-surface transition-all active:scale-95" data-path="chat" href="#"><span class="material-symbols-outlined text-[24px]">chat_bubble</span><span class="font-caption text-[11px] font-medium tracking-normal mt-0.5">Chat</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[74px] h-11 px-space-md rounded-full transition-all active:scale-95 text-[#0d0e11] bg-surface-container-low border border-outline-variant/60 shadow-sm" data-path="leaderboard" href="#"><span class="material-symbols-outlined text-[24px]">leaderboard</span><span class="font-caption text-[11px] font-bold tracking-normal mt-0.5">Leaderboard</span></a><a class="flex flex-col items-center justify-center min-w-[64px] h-12 px-space-md rounded-full text-on-surface-variant hover:text-on-surface transition-all active:scale-95" data-path="settings" href="#"><span class="material-symbols-outlined text-[24px]">settings</span><span class="font-caption text-[11px] font-medium tracking-normal mt-0.5">Settings</span></a></div></nav>
+</body></html>

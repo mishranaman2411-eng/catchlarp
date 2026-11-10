@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.CatchLARP" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/catchlarp_window_bg</item>
+    </style>
+
+    <style name="Theme.CatchLARP.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/catchlarp_splash_bg</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.CatchLARP</item>
+    </style>
+</resources>

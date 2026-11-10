@@ -1,0 +1,295 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+<meta content="mobile_tab" name="shell-type">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Space Grotesk', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+            body: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            canvas: '#f4f6f9',
+            surface: {
+              card: '#ffffff',
+              container: '#f8fafc',
+              dim: '#eceff4',
+              input: '#ffffff',
+            }
+          },
+          boxShadow: {
+            'tactile-light': '0 10px 25px -4px rgba(0, 0, 0, 0.06), 0 4px 10px -2px rgba(0, 0, 0, 0.03), inset 0 1px 0 0 rgba(255, 255, 255, 0.9)',
+            'tactile-card': '0 8px 30px -4px rgba(0, 0, 0, 0.07), 0 2px 6px -1px rgba(0, 0, 0, 0.04), inset 0 1px 0 0 #ffffff',
+            'tactile-btn': '0 2px 8px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
+            'tactile-pressed': 'inset 1px 2px 5px rgba(0, 0, 0, 0.05), inset -1px -1px 2px rgba(255, 255, 255, 0.8)',
+            'tactile-bar': '0 10px 35px -5px rgba(0, 0, 0, 0.09), 0 2px 8px rgba(0, 0, 0, 0.04), inset 0 1px 1px 0 rgba(255, 255, 255, 0.9)',
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    @layer base {
+      html, body {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f6f9;
+        color: #121417;
+        font-family: 'Space Grotesk', sans-serif;
+        overscroll-behavior: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+      .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+    }
+    ::-webkit-scrollbar { display: none; }
+
+    /* Aura Wave Animation */
+    @keyframes aura-sweep {
+      0% {
+        transform: translateX(-40%) scaleY(1);
+      }
+      50% {
+        transform: translateX(10%) scaleY(1.3) skewX(-12deg);
+      }
+      100% {
+        transform: translateX(60%) scaleY(1);
+      }
+    }
+
+    @keyframes aura-pulse {
+      0%, 100% { opacity: 0.85; filter: blur(12px); }
+      50% { opacity: 1; filter: blur(9px); }
+    }
+
+    .animate-aura-ribbon {
+      animation: aura-sweep 5s ease-in-out infinite alternate, aura-pulse 3s ease-in-out infinite;
+    }
+
+    .text-glow {
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-[#f4f6f9] text-[#121417] flex flex-col min-h-screen relative selection:bg-neutral-300 selection:text-neutral-900 antialiased">
+<!-- Subtle Tactile Ambient Background Accents -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+<div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[480px] h-[480px] rounded-full bg-slate-200/50 blur-[120px]"></div>
+<div class="absolute bottom-20 -right-20 w-[320px] h-[320px] rounded-full bg-indigo-100/40 blur-[100px]"></div>
+</div>
+<!-- Tactile Neomorphic Top Bar (Light Monochrome) -->
+<header class="fixed top-0 w-full z-40 bg-[#f4f6f9]/85 backdrop-blur-xl border-b border-black/[0.05] pt-safe">
+<!-- Android / iOS Status Bar Placement -->
+<div class="h-6 px-7 flex items-center justify-between text-xs text-neutral-500 select-none">
+<span class="font-bold text-neutral-900 tracking-tight font-sans">9:41</span>
+<div class="flex items-center gap-1.5 text-neutral-900">
+<span class="material-symbols-outlined text-[15px]">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-[15px]">wifi</span>
+<span class="material-symbols-outlined text-[15px]">battery_full</span>
+</div>
+</div>
+<!-- Minimal Navigation Bar -->
+<div class="h-14 px-6 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="font-sans font-bold text-[20px] tracking-tight text-neutral-950">CapCheck</span>
+<!-- Tactile pill badge -->
+
+</div>
+<div class="flex items-center gap-2.5">
+<button aria-label="Archive" class="w-10 h-10 rounded-full bg-white shadow-tactile-btn border border-black/[0.06] flex items-center justify-center text-neutral-700 hover:text-black hover:border-black/15 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[19px]">bookmark</span>
+</button>
+<button aria-label="More options" class="w-10 h-10 rounded-full bg-white shadow-tactile-btn border border-black/[0.06] flex items-center justify-center text-neutral-700 hover:text-black hover:border-black/15 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[19px]">more_horiz</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Scrollable Canvas -->
+<main class="flex-1 flex flex-col relative z-10 pt-28 pb-36 px-5 max-w-lg mx-auto w-full">
+<!-- Editorial Hero Section: Clean centered headline with generous vertical breathing room -->
+<section class="flex flex-col items-center text-center pt-8 pb-10">
+<h1 class="font-sans text-[28px] sm:text-[30px] leading-[36px] tracking-tight font-bold text-neutral-950 max-w-sm">
+      What are we checking today?
+    </h1>
+</section>
+<!-- Chat / Claims Stream -->
+<div class="flex flex-col gap-6 w-full">
+<!-- User Query: Tactile Soft Neomorphic Light Card Container -->
+<div class="flex flex-col items-end gap-1.5 self-end max-w-[94%]">
+<div class="bg-white/95 rounded-3xl p-4 shadow-tactile-card border border-black/[0.06] space-y-3">
+<!-- Reel link badge -->
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-neutral-100 border border-black/[0.05] text-neutral-700 text-[11px] font-medium font-body">
+<span class="material-symbols-outlined text-[14px] text-neutral-500">link</span>
+<span class="font-mono text-[11px] text-neutral-800">instagram.com/reel/C8_xK9yPQ2a</span>
+</div>
+<p class="text-[14px] leading-relaxed font-body font-medium text-neutral-800">
+          Can you fact-check this claim about drinking raw alkaline river clay curing migraines instantly?
+        </p>
+<!-- Tactile Thumbnail Attachment Preview -->
+<div class="relative w-full rounded-2xl overflow-hidden bg-neutral-50 shadow-tactile-pressed p-2.5 flex items-center gap-3 border border-black/[0.04]">
+<img class="w-11 h-11 rounded-xl object-cover shadow-sm ring-1 ring-black/5" data-alt="Dark aesthetic video frame snapshot of a person stirring raw muddy river sediment inside a clear glass jar with dramatic lighting, scientific scan HUD overlays in electric cyan and magenta on an Android device screen." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMzP_5DrbUMTHp4meSWO4qAnDAG8NSQcQ8kbYVRaXwgcvTtydwpWEDrsaNTrzYXsQ-rURrId0v-L1Zvqn3tKNw7SWbzMDlB5w7pH4Q7K4XcnztmL9UZUeHhsx6sluH6yUuXX5DNyePMovrBe1ttNtPWncQ6wgpRGuF8H2-4dgmQdf_drt6eQ5kzppsfIeVDrtrxxP7pNZONIVkh85h7ecTb5aRpUDUeroMjAknex0">
+<div class="flex-1 min-w-0">
+<p class="text-[12px] font-bold font-sans text-neutral-900 truncate">Viral Health Hype #418</p>
+<p class="text-[11px] text-neutral-500 font-body">0:42 • 3.4M views</p>
+</div>
+</div>
+</div>
+<span class="text-[11px] font-medium text-neutral-400 px-2 font-body">9:42 AM</span>
+</div>
+<!-- AI Verdict Card intentionally omitted as AI is processing query -->
+</div>
+</main>
+<!-- Bottom Floating Tactile Search / Action Bar & Status Capsule -->
+<div class="fixed bottom-20 left-0 right-0 px-5 z-40 pointer-events-none">
+<div class="max-w-md mx-auto pointer-events-auto">
+<!-- Status Capsule positioned in bottom-left above input bar -->
+<div class="mb-2.5 flex items-center justify-start">
+<div class="relative group cursor-pointer h-9 px-4 rounded-full backdrop-blur-2xl bg-neutral-950/90 border border-white/20 border-t-white/30 shadow-[0_8px_24px_rgba(0,0,0,0.22),inset_0_1px_1px_rgba(255,255,255,0.2)] overflow-hidden flex items-center justify-center transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]" id="ai-status-pill">
+<div class="animate-aura-ribbon absolute -bottom-3 left-0 w-[180%] h-8 pointer-events-none transition-all duration-700 blur-[13px] opacity-90" id="aura-ribbon" style="background: linear-gradient(90deg, rgba(16, 185, 129, 0) 0%, rgba(5, 150, 105, 0.85) 20%, rgba(59, 130, 246, 0.9) 50%, rgba(236, 72, 153, 0.85) 80%, rgba(245, 158, 11, 0.9) 92%, rgba(16, 185, 129, 0) 100%);"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-white/[0.08] to-transparent pointer-events-none rounded-full"></div>
+<div class="relative z-10 flex items-center justify-center gap-2">
+<span class="text-[12px] font-semibold tracking-wide text-white text-glow transition-all duration-300 font-sans" id="ai-status-text" style="opacity: 1; transform: translateY(0px);">Compiling...</span>
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping opacity-75" id="ai-status-dot"></span>
+</div>
+</div>
+</div>
+<!-- Input Bar: Clean Neomorphic White Capsule -->
+<div class="bg-white/95 backdrop-blur-2xl rounded-full p-2 pl-3 flex items-center gap-2 shadow-tactile-bar border border-black/[0.08]">
+<!-- Tactile Link Icon button -->
+<button aria-label="Paste Reel link" class="w-9 h-9 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-600 hover:text-black hover:bg-neutral-200 transition-colors shadow-tactile-btn border border-black/[0.05]" id="paste-btn">
+<span class="material-symbols-outlined text-[19px]">link</span>
+</button>
+<!-- Sculpted Text Input -->
+<input class="bg-transparent border-0 outline-none text-[14px] text-neutral-900 placeholder:text-neutral-400 flex-1 min-w-0 py-1 px-2 font-body font-medium focus:ring-0" id="prompt-input" placeholder="Paste Reel link or ask..." type="text">
+<!-- Action buttons -->
+<button aria-label="Audio input" class="w-9 h-9 rounded-full flex items-center justify-center text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 transition-colors">
+<span class="material-symbols-outlined text-[20px]">graphic_eq</span>
+</button>
+<!-- Send Button: Solid Black Circle with White Arrow Up -->
+<button aria-label="Send" class="w-10 h-10 rounded-full bg-neutral-950 text-white flex items-center justify-center hover:bg-neutral-800 shadow-md active:scale-95 transition-all" id="submit-btn">
+<span class="material-symbols-outlined text-[19px] font-bold">arrow_upward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation: Sculpted Light Tab Bar with Tactile Dark Active Indicator -->
+<nav class="fixed bottom-0 w-full z-30 pb-safe bg-[#f4f6f9]/90 backdrop-blur-xl border-t border-black/[0.06]">
+<div class="flex justify-around items-center h-16 max-w-md mx-auto px-6">
+<!-- Tab 1: Chat (Active: Black tactile pill indicator with white icon) -->
+<a class="flex flex-col items-center justify-center gap-1 group" href="#">
+<div class="w-11 h-8 rounded-full bg-neutral-950 shadow-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px] text-white">chat_bubble</span>
+</div>
+<span class="text-[10px] font-sans font-bold tracking-tight text-neutral-950">Chat</span>
+</a>
+<!-- Tab 2: Leaderboard -->
+<a class="flex flex-col items-center justify-center gap-1 text-neutral-500 hover:text-neutral-900 transition-colors group" href="#">
+<div class="w-11 h-8 rounded-full flex items-center justify-center group-hover:bg-black/[0.04] transition-all">
+<span class="material-symbols-outlined text-[20px] text-neutral-500 group-hover:text-neutral-900">leaderboard</span>
+</div>
+<span class="text-[10px] font-sans font-bold tracking-tight text-neutral-500 group-hover:text-neutral-900">Leaderboard</span>
+</a>
+<!-- Tab 3: Settings -->
+<a class="flex flex-col items-center justify-center gap-1 text-neutral-500 hover:text-neutral-900 transition-colors group" href="#">
+<div class="w-11 h-8 rounded-full flex items-center justify-center group-hover:bg-black/[0.04] transition-all">
+<span class="material-symbols-outlined text-[20px] text-neutral-500 group-hover:text-neutral-900">settings</span>
+</div>
+<span class="text-[10px] font-sans font-bold tracking-tight text-neutral-500 group-hover:text-neutral-900">Settings</span>
+</a>
+</div>
+<!-- Android Gesture Bar Clearance Indicator -->
+<div class="w-32 h-1 bg-neutral-300 rounded-full mx-auto mb-1"></div>
+</nav>
+<script>
+  (function init() {
+    const pasteBtn = document.getElementById('paste-btn');
+    const input = document.getElementById('prompt-input');
+    const submitBtn = document.getElementById('submit-btn');
+
+    if (pasteBtn && input) {
+      pasteBtn.addEventListener('click', () => {
+        input.value = 'https://instagram.com/reel/DE_x890HqpQ/';
+        input.focus();
+      });
+    }
+
+    if (submitBtn && input) {
+      submitBtn.addEventListener('click', () => {
+        if (input.value.trim() !== '') {
+          input.value = '';
+          input.placeholder = 'Analyzing reel claim...';
+          setTimeout(() => {
+            input.placeholder = 'Paste Reel link or ask...';
+          }, 2500);
+        }
+      });
+    }
+
+    // Dynamic AI reasoning capsule states
+    const states = [
+      {
+        label: "Thinking...",
+        dotColor: "bg-amber-400",
+        gradient: "linear-gradient(90deg, rgba(245,158,11,0) 0%, rgba(249,115,22,0.85) 20%, rgba(217,70,239,0.9) 45%, rgba(6,182,212,0.85) 75%, rgba(16,185,129,0.9) 88%, rgba(245,158,11,0) 100%)"
+      },
+      {
+        label: "Searching...",
+        dotColor: "bg-cyan-400",
+        gradient: "linear-gradient(90deg, rgba(6,182,212,0) 0%, rgba(59,130,246,0.85) 25%, rgba(147,51,234,0.85) 55%, rgba(20,184,166,0.9) 80%, rgba(6,182,212,0 100%)"
+      },
+      {
+        label: "Compiling...",
+        dotColor: "bg-emerald-400",
+        gradient: "linear-gradient(90deg, rgba(16,185,129,0) 0%, rgba(5,150,105,0.85) 20%, rgba(59,130,246,0.9) 50%, rgba(236,72,153,0.85) 80%, rgba(245,158,11,0.9) 92%, rgba(16,185,129,0) 100%)"
+      }
+    ];
+
+    let currentState = 0;
+    const pill = document.getElementById('ai-status-pill');
+    const labelEl = document.getElementById('ai-status-text');
+    const dotEl = document.getElementById('ai-status-dot');
+    const ribbonEl = document.getElementById('aura-ribbon');
+
+    function applyState(idx) {
+      if (!labelEl || !dotEl || !ribbonEl) return;
+      const s = states[idx];
+      labelEl.style.opacity = '0';
+      labelEl.style.transform = 'translateY(2px)';
+      
+      setTimeout(() => {
+        labelEl.textContent = s.label;
+        dotEl.className = `w-1.5 h-1.5 rounded-full ${s.dotColor} animate-ping opacity-75`;
+        ribbonEl.style.background = s.gradient;
+        labelEl.style.opacity = '1';
+        labelEl.style.transform = 'translateY(0)';
+      }, 150);
+    }
+
+    // Auto cycle states every 3.5 seconds
+    setInterval(() => {
+      currentState = (currentState + 1) % states.length;
+      applyState(currentState);
+    }, 3500);
+
+    // Also toggle immediately on click
+    if (pill) {
+      pill.addEventListener('click', () => {
+        currentState = (currentState + 1) % states.length;
+        applyState(currentState);
+      });
+    }
+  })();
+</script>
+
+
+</body></html>

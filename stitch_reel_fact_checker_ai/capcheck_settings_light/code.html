@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<meta content="mobile_tab" name="shell-type"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface": "#f7f9fc",
+            "surface-container": "#eceef1",
+            "surface-container-low": "#f2f4f7",
+            "surface-container-high": "#e6e8eb",
+            "surface-container-highest": "#e0e3e6",
+            "surface-container-lowest": "#ffffff",
+            "primary": "#000000",
+            "on-primary": "#ffffff",
+            "primary-container": "#1b1b1f",
+            "on-surface": "#191c1e",
+            "on-surface-variant": "#46464b",
+            "outline": "#77777b",
+            "outline-variant": "#c7c6cb",
+            "error": "#ba1a1a"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "1.25rem",
+            "gutter": "1rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2.25rem"
+          },
+          "fontFamily": {
+            "headline-xl": ["Space Grotesk"],
+            "headline-lg": ["Space Grotesk"],
+            "headline-md": ["Space Grotesk"],
+            "headline-sm": ["Space Grotesk"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Space Grotesk"],
+            "label-md": ["Space Grotesk"],
+            "label-sm": ["Space Grotesk"]
+          },
+          "fontSize": {
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-sm": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    @layer base {
+      html, body { width: 100vw; margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 16px); }
+      .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+    body { min-height: max(884px, 100dvh); }
+    /* Tactile Neomorphic Soft Shadow Tokens */
+    .tactile-card {
+      background: #ffffff;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 1px 3px 0 rgba(15, 23, 42, 0.03);
+      border: 1px solid rgba(226, 232, 240, 0.85);
+    }
+    .tactile-pill {
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9), 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+  </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-black selection:text-white">
+<!-- Minimal Light Header -->
+<header class="fixed top-0 w-full z-50 bg-[#f7f9fc]/90 backdrop-blur-md pt-safe border-b border-slate-200/60">
+<div class="h-14 px-margin flex items-center justify-between">
+<button aria-label="Go Back" class="w-10 h-10 flex items-center justify-center rounded-full text-slate-800 hover:bg-slate-200/60 active:scale-95 transition-all" onclick="history.back()">
+<span class="material-symbols-outlined text-[22px]">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-slate-900 text-center flex-1 font-semibold tracking-tight">Settings</h1>
+<div class="flex items-center justify-end w-10 h-10">
+<div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white shadow-sm ring-2 ring-slate-100">
+<span class="material-symbols-outlined text-[17px]">person</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Interactive Floating Toast -->
+<div class="fixed top-16 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 transform -translate-y-2 flex items-center gap-space-sm px-4 py-2 rounded-full bg-slate-900 text-white shadow-xl" id="settingsToast">
+<span class="material-symbols-outlined text-[16px] text-emerald-400" id="toastIcon">check_circle</span>
+<span class="font-label-sm text-label-sm text-slate-100 tracking-wide" id="toastMsg">Preference updated</span>
+</div>
+<main class="flex flex-col relative w-full pt-16 pb-28 bg-[#f7f9fc] min-h-screen">
+<div class="flex flex-col w-full px-margin pb-space-xl">
+<!-- SECTION 1: User Profile & Identity (Tactile Neomorphic Light) -->
+<div class="mt-space-md w-full rounded-2xl tactile-card p-4 transition-all duration-200 active:scale-[0.995]">
+<div class="flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-3.5 min-w-0">
+<!-- Circular grayscale tactile avatar -->
+<div class="relative w-12 h-12 rounded-full overflow-hidden bg-slate-100 flex-shrink-0 flex items-center justify-center ring-2 ring-slate-200/80 shadow-sm">
+<img class="w-full h-full object-cover grayscale contrast-125" data-alt="High contrast black and white editorial profile portrait of a thoughtful young researcher, moody dramatic rim lighting, dark studio backdrop, ultra-minimal aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtz_OXD-MGUybqwuqgLmvHq-5BVXfVuvjzsg_5nnpqEt0MxJRyU-11FMMH45Cci074oAGKeMBL275b4ENrfrugO5AZ5l3W-1X7qI1JbibCKzS5ZaG8g1zFlEXllh5-S4_e31rsOoFmjOPb0vnuc1v3jQBB8acYyM0yqqydxtYAteALVCdMy3bKrTH1bB6Vp4WmyVtj5_FDMq2uDXy1DXTlUnzlBfRgi60eekapdsc"/>
+</div>
+<!-- Identity Stack -->
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-[17px] font-bold text-slate-900 tracking-tight truncate">Alex Vance</span>
+<span class="material-symbols-outlined text-[17px] text-slate-800" title="Verified Fact Checker">verified</span>
+</div>
+<span class="font-body-sm text-body-sm text-slate-500 font-medium truncate">alex.vance@capcheck.ai</span>
+</div>
+</div>
+<!-- Free Tier Tactile Pill Badge -->
+<button class="flex-shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-full bg-slate-100/90 border border-slate-200/70 tactile-pill text-slate-700 hover:bg-slate-200/80 active:scale-95 transition-all" onclick="triggerToast('Opening Subscription Manager', 'account_circle')">
+<span class="font-label-sm text-[11px] font-bold tracking-wider uppercase text-slate-800">Free Tier</span>
+<span class="material-symbols-outlined text-[15px] text-slate-500">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- SECTION 2: Verification Engine & Preferences -->
+<div class="mt-6 w-full flex flex-col">
+<div class="px-1 mb-2">
+<span class="font-label-sm text-[11px] uppercase tracking-widest font-semibold text-slate-500">VERIFICATION &amp; AUDIT</span>
+</div>
+<div class="w-full rounded-2xl tactile-card overflow-hidden divide-y divide-slate-100">
+<!-- Row 1: Scan Clipboard Links -->
+<div class="p-4 flex items-center justify-between gap-space-md hover:bg-slate-50/70 transition-colors">
+<div class="flex flex-col min-w-0 pr-2">
+<span class="font-label-lg text-slate-900 font-semibold text-[14px]">Scan Clipboard Links</span>
+<span class="font-body-sm text-slate-500 text-[12px] mt-0.5 leading-snug">Prompt to check reel claims automatically upon pasting.</span>
+</div>
+<!-- Neomorphic Switch -->
+<button aria-checked="true" class="w-12 h-6 flex-shrink-0 rounded-full bg-slate-900 p-0.5 shadow-inner relative transition-all duration-300 focus:outline-none" id="clipboardToggle" onclick="toggleSwitch(this, 'Clipboard monitoring')" role="switch">
+<div class="thumb w-5 h-5 rounded-full bg-white shadow-md translate-x-6 transition-transform duration-300 flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+</div>
+</button>
+</div>
+<!-- Row 2: Audit Rigor -->
+<button class="w-full p-4 flex items-center justify-between gap-space-md hover:bg-slate-50/70 active:bg-slate-100/60 text-left transition-colors" onclick="cycleAuditRigor()">
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-slate-900 font-semibold text-[14px]">Audit Rigor</span>
+<span class="font-body-sm text-slate-500 text-[12px] mt-0.5">Threshold for fact verification model</span>
+</div>
+<div class="flex items-center gap-1 flex-shrink-0 text-slate-500">
+<span class="font-label-sm text-slate-900 font-bold text-[13px]" id="rigorLabel">Aggressive</span>
+<span class="material-symbols-outlined text-[18px] text-slate-400">chevron_right</span>
+</div>
+</button>
+<!-- Row 3: Source Priority -->
+<button class="w-full p-4 flex items-center justify-between gap-space-md hover:bg-slate-50/70 active:bg-slate-100/60 text-left transition-colors" onclick="cycleSourcePriority()">
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-slate-900 font-semibold text-[14px]">Source Priority</span>
+<span class="font-body-sm text-slate-500 text-[12px] mt-0.5">Weighted grounding references</span>
+</div>
+<div class="flex items-center gap-1 flex-shrink-0 text-slate-500">
+<span class="font-label-sm text-slate-700 font-medium text-[13px] max-w-[140px] truncate text-right" id="sourceLabel">Academic &amp; Primary</span>
+<span class="material-symbols-outlined text-[18px] text-slate-400">chevron_right</span>
+</div>
+</button>
+</div>
+</div>
+<!-- SECTION 3: Community & LarpKing Data -->
+<div class="mt-6 w-full flex flex-col">
+<div class="px-1 mb-2">
+<span class="font-label-sm text-[11px] uppercase tracking-widest font-semibold text-slate-500">COMMUNITY REPUTATION</span>
+</div>
+<div class="w-full rounded-2xl tactile-card overflow-hidden divide-y divide-slate-100">
+<!-- Row 1: Anonymous Audits Toggle -->
+<div class="p-4 flex items-center justify-between gap-space-md hover:bg-slate-50/70 transition-colors">
+<div class="flex flex-col min-w-0 pr-2">
+<span class="font-label-lg text-slate-900 font-semibold text-[14px]">Submit Audits Anonymously</span>
+<span class="font-body-sm text-slate-500 text-[12px] mt-0.5 leading-snug">Mask profile name on public LarpKing leaderboards.</span>
+</div>
+<button aria-checked="false" class="w-12 h-6 flex-shrink-0 rounded-full bg-slate-200 p-0.5 shadow-inner relative transition-all duration-300 focus:outline-none" id="anonToggle" onclick="toggleSwitch(this, 'Anonymous audit mode')" role="switch">
+<div class="thumb w-5 h-5 rounded-full bg-white shadow-md translate-x-0 transition-transform duration-300 flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+</div>
+</button>
+</div>
+<!-- Row 2: Reels Checked by Me -->
+<button class="w-full p-4 flex items-center justify-between gap-space-md hover:bg-slate-50/70 active:bg-slate-100/60 text-left transition-colors" onclick="triggerToast('Navigating to Audit Vault', 'history')">
+<span class="font-label-lg text-slate-900 font-semibold text-[14px]">Reels Checked by Me</span>
+<div class="flex items-center gap-1.5 flex-shrink-0 text-slate-500">
+<span class="px-2.5 py-0.5 rounded-full bg-slate-100 border border-slate-200/80 font-label-sm text-slate-900 font-bold text-[12px]">24 Audits</span>
+<span class="material-symbols-outlined text-[18px] text-slate-400">chevron_right</span>
+</div>
+</button>
+<!-- Row 3: Community Appeals -->
+<button class="w-full p-4 flex items-center justify-between gap-space-md hover:bg-slate-50/70 active:bg-slate-100/60 text-left transition-colors" onclick="triggerToast('No active appeals pending', 'rule')">
+<span class="font-label-lg text-slate-900 font-semibold text-[14px]">Community Appeals</span>
+<div class="flex items-center gap-1 flex-shrink-0 text-slate-500">
+<span class="font-label-sm text-slate-400 text-[13px] font-medium">0 Pending</span>
+<span class="material-symbols-outlined text-[18px] text-slate-400">chevron_right</span>
+</div>
+</button>
+</div>
+</div>
+<!-- SECTION 4: Data & Local Storage -->
+<div class="mt-6 w-full flex flex-col">
+<div class="px-1 mb-2">
+<span class="font-label-sm text-[11px] uppercase tracking-widest font-semibold text-slate-500">SYSTEM &amp; STORAGE</span>
+</div>
+<div class="w-full rounded-2xl tactile-card overflow-hidden divide-y divide-slate-100">
+<!-- Offline Transcripts & DB -->
+<div class="p-4 flex items-center justify-between gap-space-md">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0 text-slate-700 border border-slate-200/60">
+<span class="material-symbols-outlined text-[18px]">database</span>
+</div>
+<span class="font-label-lg text-slate-900 font-semibold text-[14px]">Offline Transcripts &amp; DB</span>
+</div>
+<span class="font-label-md text-slate-500 font-medium text-[13px]" id="storageFootprint">14.2 MB</span>
+</div>
+<!-- Clear Cached Audits -->
+<button class="w-full p-4 flex items-center justify-between gap-space-md hover:bg-rose-50/40 active:bg-rose-50/80 transition-colors text-left" id="clearCacheBtn" onclick="clearCacheAction()">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-full bg-rose-50 border border-rose-100 flex items-center justify-center flex-shrink-0 text-rose-600">
+<span class="material-symbols-outlined text-[18px]">delete_sweep</span>
+</div>
+<div class="flex flex-col text-left">
+<span class="font-label-lg text-rose-600 font-semibold text-[14px]">Clear Cached Audits</span>
+<span class="font-body-sm text-slate-500 text-[12px]">Frees local storage, keeps bookmark sync</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[18px] text-rose-500">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- SECTION 5: App Information & Legal -->
+<div class="mt-6 w-full flex flex-col">
+<div class="w-full rounded-2xl tactile-card overflow-hidden divide-y divide-slate-100">
+<button class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-50/70 active:bg-slate-100/60 transition-colors" onclick="triggerToast('Opening Privacy Policy', 'policy')">
+<span class="font-label-lg text-slate-900 font-semibold text-[14px]">Privacy Policy</span>
+<span class="material-symbols-outlined text-[18px] text-slate-400">chevron_right</span>
+</button>
+<button class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-50/70 active:bg-slate-100/60 transition-colors" onclick="triggerToast('Opening Terms of Service', 'gavel')">
+<span class="font-label-lg text-slate-900 font-semibold text-[14px]">Terms of Service</span>
+<span class="material-symbols-outlined text-[18px] text-slate-400">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Sign Out Button & Version Tag -->
+<div class="mt-6 mb-4 flex flex-col items-center justify-center gap-4">
+<button class="w-full py-3.5 rounded-full bg-white border border-rose-200/80 hover:bg-rose-50/50 active:scale-[0.985] transition-all flex items-center justify-center gap-2 text-rose-600 shadow-sm" onclick="triggerToast('Signed out of CapCheck session', 'logout')">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+<span class="font-label-lg font-bold text-[14px] tracking-wide">Sign Out of CapCheck</span>
+</button>
+<div class="flex items-center gap-2 text-slate-400 font-mono text-[11px] tracking-wider uppercase">
+<span>VERSION 1.0.4</span>
+<span class="w-1 h-1 rounded-full bg-slate-300"></span>
+<span>BUILD 248</span>
+</div>
+</div>
+</div>
+<!-- Script handlers -->
+<script>
+      let toastTimer;
+      function triggerToast(text, iconName = 'check_circle') {
+        const toast = document.getElementById('settingsToast');
+        const msg = document.getElementById('toastMsg');
+        const icon = document.getElementById('toastIcon');
+        if (!toast || !msg) return;
+
+        clearTimeout(toastTimer);
+        msg.textContent = text;
+        if (icon) icon.textContent = iconName;
+
+        toast.classList.remove('opacity-0', '-translate-y-2');
+        toast.classList.add('opacity-100', 'translate-y-0');
+
+        toastTimer = setTimeout(() => {
+          toast.classList.remove('opacity-100', 'translate-y-0');
+          toast.classList.add('opacity-0', '-translate-y-2');
+        }, 2200);
+      }
+
+      function toggleSwitch(btn, labelName) {
+        const isChecked = btn.getAttribute('aria-checked') === 'true';
+        const newChecked = !isChecked;
+        btn.setAttribute('aria-checked', String(newChecked));
+        const thumb = btn.querySelector('.thumb');
+
+        if (newChecked) {
+          btn.classList.remove('bg-slate-200');
+          btn.classList.add('bg-slate-900');
+          thumb.classList.remove('translate-x-0');
+          thumb.classList.add('translate-x-6');
+          triggerToast(labelName + ' enabled');
+        } else {
+          btn.classList.remove('bg-slate-900');
+          btn.classList.add('bg-slate-200');
+          thumb.classList.remove('translate-x-6');
+          thumb.classList.add('translate-x-0');
+          triggerToast(labelName + ' disabled');
+        }
+      }
+
+      const rigorModes = ['Aggressive', 'Literal Fact Only', 'Include Exaggerations'];
+      let currentRigorIndex = 0;
+      function cycleAuditRigor() {
+        currentRigorIndex = (currentRigorIndex + 1) % rigorModes.length;
+        const label = document.getElementById('rigorLabel');
+        if (label) label.textContent = rigorModes[currentRigorIndex];
+        triggerToast('Rigor: ' + rigorModes[currentRigorIndex], 'tune');
+      }
+
+      const sourceModes = ['Academic & Primary', 'Factcheck Consortia', 'Gov & Open Data'];
+      let currentSourceIndex = 0;
+      function cycleSourcePriority() {
+        currentSourceIndex = (currentSourceIndex + 1) % sourceModes.length;
+        const label = document.getElementById('sourceLabel');
+        if (label) label.textContent = sourceModes[currentSourceIndex];
+        triggerToast('Source: ' + sourceModes[currentSourceIndex], 'menu_book');
+      }
+
+      function clearCacheAction() {
+        const storageSpan = document.getElementById('storageFootprint');
+        if (storageSpan) {
+          storageSpan.textContent = '0.0 MB';
+        }
+        triggerToast('Cache cleaned (14.2 MB freed)', 'cleaning_services');
+      }
+    </script>
+</main>
+<!-- Standard Fixed Bottom Tab Navigation (Light Theme matching Leaderboard) -->
+<nav class="fixed bottom-0 w-full z-50 pb-safe bg-[#ffffff]/90 backdrop-blur-xl border-t border-slate-200/80 shadow-[0_-4px_20px_rgba(0,0,0,0.03)]">
+<div class="flex justify-around items-center h-16 px-gutter max-w-md mx-auto">
+<a class="flex flex-col items-center justify-center w-16 h-12 text-slate-400 hover:text-slate-800 transition-all gap-1" data-path="chat" href="#">
+<span class="material-symbols-outlined text-[23px]">chat_bubble</span>
+<span class="font-label-sm text-[11px] font-medium tracking-tight">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center w-16 h-12 text-slate-400 hover:text-slate-800 transition-all gap-1" data-path="leaderboard" href="#">
+<span class="material-symbols-outlined text-[23px]">leaderboard</span>
+<span class="font-label-sm text-[11px] font-medium tracking-tight">Leaderboard</span>
+</a>
+<a aria-current="page" class="flex flex-col items-center justify-center w-16 h-12 transition-all gap-1 text-slate-900 font-bold" data-path="settings" href="#">
+<span class="material-symbols-outlined text-[23px] text-slate-950 font-bold">settings</span>
+<span class="font-label-sm text-[11px] font-bold tracking-tight text-slate-950">Settings</span>
+</a>
+</div>
+<!-- Android gesture navigation pill bar safe indicator spacer -->
+<div class="w-32 h-1 bg-slate-200 rounded-full mx-auto mb-1 opacity-70"></div>
+</nav>
+</body></html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>CatchLARP — Connect Server</title>
+  <style>
+    :root {
+      --bg: #070709;
+      --card: #0f1015;
+      --card-elev: #151720;
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #fafafa;
+      --muted: #a1a1aa;
+      --accent: #22d3ee;
+      --emerald: #10b981;
+      --rose: #f43f5e;
+      --btn-bg: #ffffff;
+      --btn-fg: #09090b;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(600px 320px at 50% -80px, rgba(34, 211, 238, 0.14), transparent 70%),
+        radial-gradient(480px 260px at 85% 15%, rgba(217, 70, 239, 0.1), transparent 70%),
+        var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px 18px 28px;
+    }
+    .shell { width: 100%; max-width: 440px; margin: 0 auto; }
+    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .badge {
+      width: 42px; height: 42px; border-radius: 14px;
+      background: linear-gradient(135deg, #10b981, #22d3ee, #d946ef);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 16px; color: #050507; flex-shrink: 0;
+      box-shadow: 0 8px 24px rgba(34, 211, 238, 0.25);
+    }
+    .eyebrow {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent); margin: 0 0 2px;
+    }
+    h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin: 0; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    }
+    .desc { font-size: 13px; line-height: 1.55; color: var(--muted); margin: 0 0 16px; }
+    .banner {
+      display: none;
+      border-radius: 14px;
+      padding: 11px 13px;
+      font-size: 12px;
+      line-height: 1.45;
+      margin-bottom: 14px;
+      word-break: break-word;
+    }
+    .banner.show { display: block; }
+    .banner.share {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #a7f3d0;
+    }
+    .banner.error {
+      background: rgba(244, 63, 94, 0.12);
+      border: 1px solid rgba(244, 63, 94, 0.35);
+      color: #fecdd3;
+    }
+    .label {
+      display: block;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 7px;
+    }
+    input[type="url"] {
+      width: 100%;
+      background: #08080c;
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 14px;
+      padding: 13px 14px;
+      font-size: 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      outline: none;
+    }
+    input[type="url"]:focus { border-color: var(--accent); }
+    .chips { display: flex; flex-wrap: wrap; gap: 7px; margin: 12px 0 16px; }
+    .chip {
+      border: 1px solid var(--border);
+      background: var(--card-elev);
+      color: #d4d4d8;
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .chip:active { opacity: 0.75; }
+    .actions { display: flex; flex-direction: column; gap: 9px; }
+    .btn {
+      width: 100%;
+      border: 0;
+      border-radius: 999px;
+      padding: 13px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn.primary { background: var(--btn-bg); color: var(--btn-fg); }
+    .btn.secondary {
+      background: var(--card-elev);
+      color: var(--text);
+      border: 1px solid var(--border);
+      display: none;
+    }
+    .btn.secondary.show { display: block; }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .status {
+      margin-top: 12px;
+      font-size: 12px;
+      line-height: 1.45;
+      color: var(--muted);
+      min-height: 18px;
+      word-break: break-word;
+    }
+    .status.ok { color: #6ee7b7; }
+    .status.err { color: #fda4af; }
+    .note {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 11.5px;
+      line-height: 1.5;
+      color: #71717a;
+    }
+    .note code { color: #d4d4d8; font-family: ui-monospace, monospace; }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="brand">
+      <div class="badge">CL</div>
+      <div>
+        <p class="eyebrow">CATCHLARP ANDROID</p>
+        <h1 id="page-title">Connect Backend Server</h1>
+      </div>
+    </div>
+
+    <section class="card">
+      <p class="desc" id="page-desc">
+        Enter your CatchLARP FastAPI URL (Render free tier or local dev host). Media extraction, transcription, and API keys stay strictly on your server.
+      </p>
+
+      <div id="shared-banner" class="banner share"></div>
+      <div id="error-banner" class="banner error"></div>
+
+      <form id="connect-form">
+        <label class="label" for="server-url">FastAPI Server URL</label>
+        <input
+          id="server-url"
+          type="url"
+          inputmode="url"
+          autocomplete="url"
+          autocapitalize="none"
+          spellcheck="false"
+          placeholder="https://your-catchlarp.onrender.com"
+          required
+        />
+
+        <div class="chips">
+          <button type="button" class="chip" data-url="https://">Render HTTPS</button>
+          <button type="button" class="chip" data-url="http://10.0.2.2:8000">Emulator (10.0.2.2:8000)</button>
+          <button type="button" class="chip" data-url="http://127.0.0.1:8000">USB / ADB (127.0.0.1:8000)</button>
+        </div>
+
+        <div class="actions">
+          <button id="connect-btn" type="submit" class="btn primary">Connect &amp; Verify Server</button>
+          <button id="retry-saved-btn" type="button" class="btn secondary">Retry Saved Server</button>
+        </div>
+
+        <div id="status-msg" class="status" role="status" aria-live="polite"></div>
+      </form>
+
+      <div class="note">
+        Free-tier checklist: set <code>GROQ_API_KEY</code>, <code>GEMINI_API_KEY</code>, <code>SUPABASE_JWT_SECRET</code>, and <code>ADMIN_KEY</code> on your backend host.
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const form = document.getElementById("connect-form");
+      const input = document.getElementById("server-url");
+      const connectBtn = document.getElementById("connect-btn");
+      const retryBtn = document.getElementById("retry-saved-btn");
+      const statusMsg = document.getElementById("status-msg");
+      const sharedBanner = document.getElementById("shared-banner");
+      const errorBanner = document.getElementById("error-banner");
+      const pageTitle = document.getElementById("page-title");
+
+      const params = new URLSearchParams(window.location.search);
+      const mode = params.get("mode") || "setup";
+
+      function setStatus(text, kind) {
+        statusMsg.textContent = text || "";
+        statusMsg.className = "status" + (kind ? " " + kind : "");
+      }
+
+      if (mode === "settings") {
+        pageTitle.textContent = "Switch Backend Server";
+      } else if (mode === "error") {
+        pageTitle.textContent = "Server Unreachable";
+      }
+
+      if (window.CatchLarpAndroid) {
+        const saved = String(window.CatchLarpAndroid.getBackendUrl() || "").trim();
+        if (saved) {
+          input.value = saved;
+          if (mode === "error" || mode === "settings") {
+            retryBtn.classList.add("show");
+            retryBtn.textContent = mode === "settings" ? "Back to Saved Server" : "Retry " + saved;
+          }
+        }
+
+        const shared = String(window.CatchLarpAndroid.peekPendingSharedUrl() || "").trim();
+        if (shared) {
+          sharedBanner.textContent = "Shared Instagram Reel queued: " + shared;
+          sharedBanner.classList.add("show");
+        }
+
+        try {
+          const errState = JSON.parse(window.CatchLarpAndroid.getPendingErrorStateJson() || "{}");
+          if (errState.error) {
+            errorBanner.textContent = errState.error;
+            errorBanner.classList.add("show");
+          }
+        } catch (err) {
+          // Ignore malformed error payload
+        }
+      }
+
+      document.querySelectorAll(".chip").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          input.value = btn.getAttribute("data-url") || "";
+          input.focus();
+          const len = input.value.length;
+          input.setSelectionRange(len, len);
+          setStatus("", "");
+        });
+      });
+
+      retryBtn.addEventListener("click", function () {
+        if (window.CatchLarpAndroid) {
+          window.CatchLarpAndroid.useSavedServer();
+        }
+      });
+
+      window.__catchLarpConnectResult = function (rawJson) {
+        connectBtn.disabled = false;
+        connectBtn.textContent = "Connect & Verify Server";
+        try {
+          const data = JSON.parse(rawJson || "{}");
+          if (data.ok) {
+            setStatus("Connected (" + (data.daily_limit || 20) + " daily checks/user). Opening CatchLARP...", "ok");
+          } else {
+            setStatus(data.error || "Unable to verify CatchLARP backend.", "err");
+          }
+        } catch (err) {
+          setStatus("Unexpected response while probing server.", "err");
+        }
+      };
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const url = (input.value || "").trim();
+        if (!url) {
+          setStatus("Enter your CatchLARP server URL.", "err");
+          return;
+        }
+        errorBanner.classList.remove("show");
+        connectBtn.disabled = true;
+        connectBtn.textContent = "Checking Server...";
+        setStatus("Checking /api/auth/config (may take ~20s if waking Render free tier)...", "");
+        if (window.CatchLarpAndroid) {
+          window.CatchLarpAndroid.testAndConnect(url);
+        } else {
+          setStatus("Android bridge unavailable outside APK.", "err");
+          connectBtn.disabled = false;
+          connectBtn.textContent = "Connect & Verify Server";
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

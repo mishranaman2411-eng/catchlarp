@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="catchlarp_window_bg">#F4F6F9</color>
+    <color name="catchlarp_splash_bg">#070709</color>
+    <color name="catchlarp_icon_bg">#070709</color>
+</resources>
