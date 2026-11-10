@@ -55,7 +55,12 @@ def get_current_user(
         ) from exc
 
     aud = payload.get("aud")
-    if aud is not None and aud != "authenticated":
+    valid_aud = (
+        aud is None
+        or aud == "authenticated"
+        or (isinstance(aud, list) and "authenticated" in aud)
+    )
+    if not valid_aud:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token audience is not authorized.",

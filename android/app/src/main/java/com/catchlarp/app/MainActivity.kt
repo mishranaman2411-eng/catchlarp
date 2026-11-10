@@ -24,8 +24,10 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.catchlarp.app.auth.SessionTokenStore
 import com.catchlarp.app.bridge.CatchLarpBridge
 import com.catchlarp.app.data.ServerPreferences
+import com.catchlarp.app.net.ServerProbe
 import com.catchlarp.app.net.UrlPolicy
 import org.json.JSONObject
 import java.util.concurrent.Executors
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var webView: WebView
     private lateinit var progressBar: ProgressBar
     private lateinit var serverPrefs: ServerPreferences
+    private lateinit var sessionStore: SessionTokenStore
     private lateinit var bridge: CatchLarpBridge
 
     private val ioExecutor = Executors.newSingleThreadExecutor()
@@ -64,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         webView = findViewById(R.id.catchlarp_webview)
         progressBar = findViewById(R.id.page_progress_bar)
         serverPrefs = ServerPreferences(this)
+        sessionStore = SessionTokenStore(this)
 
         applySystemBarAppearance(serverPrefs.isDarkTheme())
         setupWindowInsets()
@@ -72,12 +76,9 @@ class MainActivity : AppCompatActivity() {
         setupWebView()
         setupBackNavigation()
 
-        val savedBackend = serverPrefs.getBackendUrl()
-        if (savedBackend.isEmpty()) {
-            loadConnectPage()
-        } else {
-            loadBackendRoot(savedBackend)
-        }
+        val targetBackend = serverPrefs.getBackendUrl()
+        syncPublicSupabaseConfigInBackground(targetBackend)
+        loadBackendRoot(targetBackend)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -86,15 +87,22 @@ class MainActivity : AppCompatActivity() {
         val capturedUrl = extractIncomingShareIntent(intent) ?: return
         val activeUrl = bridge.activePageUrl
         val backendUrl = serverPrefs.getBackendUrl()
-        if (backendUrl.isNotEmpty() && UrlPolicy.isSameOrigin(activeUrl, backendUrl)) {
+        if (UrlPolicy.isSameOrigin(activeUrl, backendUrl)) {
             val quoted = JSONObject.quote(capturedUrl)
             webView.post {
                 webView.evaluateJavascript("window.__catchLarpReceiveSharedUrl && window.__catchLarpReceiveSharedUrl($quoted);", null)
             }
-        } else if (backendUrl.isNotEmpty()) {
-            loadBackendRoot(backendUrl)
         } else {
-            loadConnectPage()
+            loadBackendRoot(backendUrl)
+        }
+    }
+
+    private fun syncPublicSupabaseConfigInBackground(backendUrl: String) {
+        ioExecutor.execute {
+            val probe = ServerProbe.probeBackend(backendUrl)
+            if (probe.ok && probe.supabaseConfig != null) {
+                serverPrefs.setSupabaseConfig(probe.supabaseConfig)
+            }
         }
     }
 
@@ -128,12 +136,21 @@ class MainActivity : AppCompatActivity() {
         bridge = CatchLarpBridge(
             context = applicationContext,
             serverPrefs = serverPrefs,
+            sessionStore = sessionStore,
             ioExecutor = ioExecutor,
             onConnectCompleted = { jsonPayload ->
                 val quoted = JSONObject.quote(jsonPayload)
                 runOnUiThread {
                     if (!isFinishing && !isDestroyed) {
                         webView.evaluateJavascript("window.__catchLarpConnectResult && window.__catchLarpConnectResult($quoted);", null)
+                    }
+                }
+            },
+            onSupabaseAuthCompleted = { jsonPayload ->
+                val quoted = JSONObject.quote(jsonPayload)
+                runOnUiThread {
+                    if (!isFinishing && !isDestroyed) {
+                        webView.evaluateJavascript("window.__catchLarpSupabaseAuthResult && window.__catchLarpSupabaseAuthResult($quoted);", null)
                     }
                 }
             },

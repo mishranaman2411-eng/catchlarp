@@ -15,6 +15,7 @@ from fastapi import Depends, FastAPI, HTTPException, Request, status
 from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
+import jwt
 from pydantic import BaseModel, Field, field_validator
 
 from auth import get_current_user, require_admin_key
@@ -73,11 +74,12 @@ _SECRET_ENV_VARS = (
     "GEMINI_API_KEY",
     "GOOGLE_API_KEY",
     "SUPABASE_JWT_SECRET",
+    "SUPABASE_SERVICE_ROLE_KEY",
     "ADMIN_KEY",
 )
 
 _SECRET_PATTERN_RE = re.compile(
-    r"(?:gsk_[A-Za-z0-9_-]{8,}|AIza[A-Za-z0-9_-]{8,}|eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+)"
+    r"(?:gsk_[A-Za-z0-9_-]{8,}|AIza[A-Za-z0-9_-]{8,}|sb_secret_[A-Za-z0-9_-]{8,}|eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+)"
 )
 
 
@@ -176,6 +178,24 @@ class LarpKingResponse(BaseModel):
     flagged_creators: list[CreatorEntry]
     legit_creators: list[CreatorEntry]
     stats: AuditStats
+
+
+def _is_safe_public_supabase_key(candidate: str) -> str | None:
+    """Return key only if it is not a secret/service_role key; never leak privileged keys."""
+    clean = candidate.strip()
+    if not clean:
+        return None
+    if clean.startswith("sb_secret_"):
+        return None
+    if clean.count(".") == 2:
+        try:
+            claims = jwt.decode(clean, options={"verify_signature": False})
+            role = str(claims.get("role", "")).strip().lower()
+            if role in ("service_role", "supabase_admin"):
+                return None
+        except jwt.InvalidTokenError:
+            return None
+    return clean
 
 
 def _sanitize_error_detail(message: str) -> str:
@@ -358,7 +378,7 @@ def create_app(
     async def auth_config() -> AuthConfigResponse:
         return AuthConfigResponse(
             supabase_url=os.environ.get("SUPABASE_URL", "").strip() or None,
-            supabase_anon_key=os.environ.get("SUPABASE_ANON_KEY", "").strip() or None,
+            supabase_anon_key=_is_safe_public_supabase_key(os.environ.get("SUPABASE_ANON_KEY", "")),
             daily_limit=daily_limit,
         )
 

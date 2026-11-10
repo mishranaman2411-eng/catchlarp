@@ -404,26 +404,6 @@
         </button>
       </div>
     </div>
-
-    <!-- Android App Server Connection (Shown only inside APK) -->
-    <div id="settings-android-server-section" class="hidden">
-      <p class="px-1 mb-2 font-mono text-[11px] uppercase tracking-widest font-semibold text-neutral-500 dark:text-zinc-500">
-        ANDROID BACKEND SERVER
-      </p>
-      <div class="rounded-2xl bg-white dark:bg-[#0d0d11] border border-black/[0.06] dark:border-white/[0.08] shadow-tactile-card dark:shadow-none p-4 flex items-center justify-between gap-4">
-        <div class="min-w-0">
-          <p class="font-display font-semibold text-sm text-neutral-950 dark:text-white">Connected Host</p>
-          <p id="settings-android-server-url" class="font-mono text-xs text-neutral-500 dark:text-zinc-400 mt-0.5 truncate">—</p>
-        </div>
-        <button
-          id="settings-switch-server-btn"
-          type="button"
-          class="rounded-full bg-neutral-950 text-white dark:bg-white dark:text-black px-3.5 py-1.5 font-display text-xs font-semibold shrink-0"
-        >
-          Switch
-        </button>
-      </div>
-    </div>
   </main>
 
   <!-- STITCH SIGN-IN MODAL (Supabase Email/Password or Bearer JWT) -->
@@ -1168,11 +1148,37 @@
         });
       }
 
+      function buildBackendHeaders(extraHeaders, tokenOverride) {
+        const headers = Object.assign({}, extraHeaders || {});
+        const activeToken = (tokenOverride !== undefined ? tokenOverride : authToken) || "";
+        if (activeToken) {
+          headers["Authorization"] = "Bearer " + activeToken;
+        }
+        return headers;
+      }
+
+      function persistSessionToken(token) {
+        authToken = token ? String(token).trim() : "";
+        if (authToken) {
+          localStorage.setItem("catchlarp_jwt", authToken);
+        } else {
+          localStorage.removeItem("catchlarp_jwt");
+        }
+        try {
+          if (window.CatchLarpAndroid && typeof window.CatchLarpAndroid.setAccessToken === "function") {
+            window.CatchLarpAndroid.setAccessToken(authToken);
+          }
+        } catch (err) {
+          // Ignore outside Android WebView
+        }
+      }
+
       async function refreshAudits() {
         try {
+          const authHeaders = buildBackendHeaders();
           const [auditsResp, larpResp] = await Promise.all([
-            fetch("/api/audits"),
-            fetch("/api/larpking"),
+            fetch("/api/audits", { headers: authHeaders }),
+            fetch("/api/larpking", { headers: authHeaders }),
           ]);
           if (auditsResp.ok) {
             const data = await auditsResp.json();
@@ -1230,9 +1236,27 @@
 
       async function fetchAuthState() {
         try {
-          const cfgResp = await fetch("/api/auth/config");
+          if (!authToken && window.CatchLarpAndroid && typeof window.CatchLarpAndroid.getAccessToken === "function") {
+            const androidStoredToken = String(window.CatchLarpAndroid.getAccessToken() || "").trim();
+            if (androidStoredToken) {
+              authToken = androidStoredToken;
+              localStorage.setItem("catchlarp_jwt", authToken);
+            }
+          }
+          const cfgResp = await fetch("/api/auth/config", { headers: buildBackendHeaders() });
           if (cfgResp.ok) {
             authConfig = await cfgResp.json();
+          }
+          if ((!authConfig.supabase_url || !authConfig.supabase_anon_key) && window.CatchLarpAndroid && typeof window.CatchLarpAndroid.getSupabaseConfigJson === "function") {
+            try {
+              const androidCfg = JSON.parse(window.CatchLarpAndroid.getSupabaseConfigJson() || "{}");
+              if (androidCfg.supabase_url && androidCfg.supabase_anon_key) {
+                authConfig.supabase_url = authConfig.supabase_url || androidCfg.supabase_url;
+                authConfig.supabase_anon_key = authConfig.supabase_anon_key || androidCfg.supabase_anon_key;
+              }
+            } catch (err) {
+              // Ignore malformed JSON from bridge
+            }
           }
           if (!authToken) {
             authState = {
@@ -1246,10 +1270,11 @@
             return;
           }
           const resp = await fetch("/api/auth/me", {
-            headers: { Authorization: "Bearer " + authToken },
+            headers: buildBackendHeaders(),
           });
           if (resp.ok) {
             const me = await resp.json();
+            persistSessionToken(authToken);
             authState = {
               authenticated: true,
               sub: me.sub,
@@ -1258,8 +1283,7 @@
               quota_limit: me.quota_limit,
             };
           } else {
-            authToken = "";
-            localStorage.removeItem("catchlarp_jwt");
+            persistSessionToken("");
             authState = {
               authenticated: false,
               sub: null,
@@ -1309,8 +1333,7 @@
       }
 
       function signOutSession() {
-        authToken = "";
-        localStorage.removeItem("catchlarp_jwt");
+        persistSessionToken("");
         authState = {
           authenticated: false,
           sub: null,
@@ -1398,33 +1421,62 @@
           const passwordVal = authPasswordInput ? authPasswordInput.value : "";
 
           if (!candidateToken && authConfig.supabase_url && authConfig.supabase_anon_key && emailVal && passwordVal) {
-            try {
-              const sbResp = await fetch(
-                authConfig.supabase_url.replace(/\/+$/, "") + "/auth/v1/token?grant_type=password",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                    apikey: authConfig.supabase_anon_key,
-                  },
-                  body: JSON.stringify({ email: emailVal, password: passwordVal }),
+            if (window.CatchLarpAndroid && typeof window.CatchLarpAndroid.signInWithSupabase === "function") {
+              try {
+                const sbNative = await new Promise(function (resolve) {
+                  window.__catchLarpSupabaseAuthResult = function (rawJson) {
+                    try {
+                      resolve(JSON.parse(rawJson || "{}"));
+                    } catch (err) {
+                      resolve({ ok: false, error: "Invalid sign-in response." });
+                    }
+                  };
+                  window.CatchLarpAndroid.signInWithSupabase(emailVal, passwordVal);
+                });
+                if (!sbNative.ok || !sbNative.access_token) {
+                  if (authErrorMsg) {
+                    authErrorMsg.textContent = sbNative.error || "Supabase sign-in failed.";
+                    authErrorMsg.classList.remove("hidden");
+                  }
+                  return;
                 }
-              );
-              const sbData = await sbResp.json().catch(function () { return {}; });
-              if (!sbResp.ok || !sbData.access_token) {
+                candidateToken = sbNative.access_token;
+              } catch (err) {
                 if (authErrorMsg) {
-                  authErrorMsg.textContent = sbData.error_description || sbData.msg || "Supabase sign-in failed.";
+                  authErrorMsg.textContent = "Native Supabase sign-in failed.";
                   authErrorMsg.classList.remove("hidden");
                 }
                 return;
               }
-              candidateToken = sbData.access_token;
-            } catch (err) {
-              if (authErrorMsg) {
-                authErrorMsg.textContent = "Network error contacting Supabase Auth.";
-                authErrorMsg.classList.remove("hidden");
+            } else {
+              try {
+                const sbResp = await fetch(
+                  authConfig.supabase_url.replace(/\/+$/, "") + "/auth/v1/token?grant_type=password",
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      apikey: authConfig.supabase_anon_key,
+                    },
+                    body: JSON.stringify({ email: emailVal, password: passwordVal }),
+                  }
+                );
+                const sbData = await sbResp.json().catch(function () { return {}; });
+                if (!sbResp.ok || !sbData.access_token) {
+                  if (authErrorMsg) {
+                    authErrorMsg.textContent = sbData.error_description || sbData.msg || "Supabase sign-in failed.";
+                    authErrorMsg.classList.remove("hidden");
+                  }
+                  return;
+                }
+                candidateToken = sbData.access_token;
+              } catch (err) {
+                if (authErrorMsg) {
+                  authErrorMsg.textContent = "Network error contacting Supabase Auth.";
+                  authErrorMsg.classList.remove("hidden");
+                }
+                return;
               }
-              return;
             }
           }
 
@@ -1437,7 +1489,7 @@
           }
 
           const meResp = await fetch("/api/auth/me", {
-            headers: { Authorization: "Bearer " + candidateToken },
+            headers: buildBackendHeaders({}, candidateToken),
           });
           const meData = await meResp.json().catch(function () { return {}; });
           if (!meResp.ok) {
@@ -1448,8 +1500,7 @@
             return;
           }
 
-          authToken = candidateToken;
-          localStorage.setItem("catchlarp_jwt", authToken);
+          persistSessionToken(candidateToken);
           await fetchAuthState();
           closeAuthModal();
           showToast("Signed in as " + (authState.email || authState.sub), "verified_user");
@@ -1468,7 +1519,7 @@
           const secretVal = adminSecretInput ? adminSecretInput.value : "";
           const resp = await fetch("/api/audits", {
             method: "DELETE",
-            headers: { "X-Admin-Key": secretVal },
+            headers: buildBackendHeaders({ "X-Admin-Key": secretVal }),
           });
           const data = await resp.json().catch(function () { return {}; });
           if (!resp.ok) {
@@ -1565,13 +1616,9 @@
         const loadingBubble = addLoadingBubble();
 
         try {
-          const headers = { "Content-Type": "application/json" };
-          if (authToken) {
-            headers["Authorization"] = "Bearer " + authToken;
-          }
           const resp = await fetch("/api/chat", {
             method: "POST",
-            headers: headers,
+            headers: buildBackendHeaders({ "Content-Type": "application/json" }),
             body: JSON.stringify({ message: message }),
           });
           const data = await resp.json().catch(function () { return {}; });
@@ -1652,21 +1699,6 @@
       };
 
       async function bootApp() {
-        if (window.CatchLarpAndroid) {
-          const srvSection = document.getElementById("settings-android-server-section");
-          const srvUrlEl = document.getElementById("settings-android-server-url");
-          const switchSrvBtn = document.getElementById("settings-switch-server-btn");
-          if (srvSection) srvSection.classList.remove("hidden");
-          if (srvUrlEl && typeof window.CatchLarpAndroid.getBackendUrl === "function") {
-            srvUrlEl.textContent = window.CatchLarpAndroid.getBackendUrl() || window.location.origin;
-          }
-          if (switchSrvBtn && typeof window.CatchLarpAndroid.openServerSettings === "function") {
-            switchSrvBtn.addEventListener("click", function () {
-              window.CatchLarpAndroid.openServerSettings();
-            });
-          }
-        }
-
         await fetchAuthState();
 
         if (window.CatchLarpAndroid && typeof window.CatchLarpAndroid.consumePendingSharedUrl === "function") {

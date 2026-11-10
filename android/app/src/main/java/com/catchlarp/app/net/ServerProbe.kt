@@ -1,5 +1,7 @@
 package com.catchlarp.app.net
 
+import com.catchlarp.app.BuildConfig
+import com.catchlarp.app.auth.SupabaseConfig
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -15,6 +17,7 @@ data class ProbeResult(
     val ok: Boolean,
     val baseUrl: String,
     val dailyLimit: Int? = null,
+    val supabaseConfig: SupabaseConfig? = null,
     val errorMessage: String? = null,
 )
 
@@ -69,10 +72,17 @@ object ServerProbe {
                 )
             }
 
+            val sbConfig = SupabaseConfig.validate(
+                json.optString("supabase_url", ""),
+                json.optString("supabase_anon_key", ""),
+                allowInsecureLocalHttp = BuildConfig.DEBUG,
+            ).getOrNull()
+
             ProbeResult(
                 ok = true,
                 baseUrl = cleanBase,
                 dailyLimit = json.optInt("daily_limit", 20),
+                supabaseConfig = sbConfig,
             )
         } catch (_: UnknownHostException) {
             ProbeResult(false, cleanBase, errorMessage = "Host not found. Check the URL spelling and your network connection.")

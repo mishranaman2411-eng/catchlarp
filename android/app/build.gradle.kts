@@ -22,12 +22,27 @@ android {
 
         val configuredServerUrl = (project.findProperty("CATCHLARP_SERVER_URL") as String?)
             ?: System.getenv("CATCHLARP_SERVER_URL")
-            ?: ""
+            ?: "https://catchlarp.onrender.com"
         val escapedServerUrl = configuredServerUrl
             .trim()
+            .ifEmpty { "https://catchlarp.onrender.com" }
             .replace("\\", "\\\\")
             .replace("\"", "\\\"")
         buildConfigField("String", "DEFAULT_BACKEND_URL", "\"$escapedServerUrl\"")
+
+        val rawSupabaseUrl = (project.findProperty("SUPABASE_URL") as String?)
+            ?: System.getenv("SUPABASE_URL")
+            ?: ""
+        val rawSupabaseAnonKey = (project.findProperty("SUPABASE_ANON_KEY") as String?)
+            ?: System.getenv("SUPABASE_ANON_KEY")
+            ?: ""
+        if (rawSupabaseAnonKey.trim().startsWith("sb_secret_")) {
+            throw GradleException("Refusing to bundle secret Supabase key into Android BuildConfig. Use public SUPABASE_ANON_KEY only.")
+        }
+        val escapedSupabaseUrl = rawSupabaseUrl.trim().replace("\\", "\\\\").replace("\"", "\\\"")
+        val escapedSupabaseAnonKey = rawSupabaseAnonKey.trim().replace("\\", "\\\\").replace("\"", "\\\"")
+        buildConfigField("String", "SUPABASE_URL", "\"$escapedSupabaseUrl\"")
+        buildConfigField("String", "SUPABASE_ANON_KEY", "\"$escapedSupabaseAnonKey\"")
     }
 
     signingConfigs {

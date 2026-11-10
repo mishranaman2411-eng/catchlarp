@@ -49,11 +49,11 @@ Install the pre-built APK on an Android phone or emulator:
 adb install -r dist/CatchLARP.apk
 ```
 
-Launch **CatchLARP**, enter your deployed Render `https://...` URL (or `http://10.0.2.2:8000` for an Android Emulator), and sign in with Supabase auth. From Instagram, tap **Share → CatchLARP** to send a Reel link straight into the verification chat.
+Launch **CatchLARP** — it connects automatically to `https://catchlarp.onrender.com` without manual server setup — and sign in with Supabase auth. From Instagram, tap **Share → CatchLARP** to send a Reel link straight into the verification chat.
 
-To rebuild from source:
+To rebuild from source (optionally embedding your public Supabase URL and public Anon key client-side — never add `SUPABASE_JWT_SECRET`, `service_role`, or AI keys to Android):
 
 ```bash
 cd android
-./gradlew testDebugUnitTest assembleDebug
+./gradlew testDebugUnitTest assembleDebug -PSUPABASE_URL="https://your-project.supabase.co" -PSUPABASE_ANON_KEY="your-public-anon-key"
 ```
